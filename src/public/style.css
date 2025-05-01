@@ -1,0 +1,62 @@
+@import url("https://fonts.googleapis.com/css2?family=Lexend+Deca:wght@100..900&display=swap");
+
+:root {
+  font-size: 15px;
+  
+  --background-color: #f5fdfa;
+  --text-color: #000000;
+  --link-color: #007bff;
+  --header-background: #f8f9fa;
+  --card-background: #ffffff;
+  --card-border: #e1e1e1;
+  --button-background: #059669;
+  --button-background-hover: #047857;
+  --button-text-color: #ffffff;
+}
+* {
+  font-family: "Lexend Deca", sans-serif;
+}
+
+body {
+  background-color: var(--background-color);
+  color: var(--text-color);
+  margin: 0;
+  padding: 0;
+  
+  input[type="text"],
+  input[type="email"],
+  input[type="password"],
+  input[type="number"],
+  input[type="tel"],
+  input[type="url"],
+  input[type="search"]{
+    font: inherit;
+    padding: 0.5rem;
+    height: 2.5rem;
+    border: 1px solid #ccc;
+    border-radius: 0.5rem;
+  }
+}
+
+.medium {
+  width: 100%;
+  max-width: 900px;
+  margin: 0 auto;
+  
+  /* background-color: blue; */
+}
+
+button {
+  height: 2.5rem;
+  border-radius: 0.5rem;
+  border: none;
+  padding: 0.75rem;
+  background-color: var(--button-background);
+  color: var(--button-text-color);
+  
+  cursor: pointer;
+  
+  &:hover {
+    background-color: var(--button-background-hover);
+  }
+}

@@ -1,0 +1,70 @@
+<main class="medium">
+  <div class="card">
+    <form action="">
+      <h2>Log into you account</h2>
+
+      <label for="email">Email</label>
+      <input type="email" name="email" placeholder="" required />
+      <label for="password">Password</label>
+      <input type="password" name="password" placeholder="" required />
+      <p id="error"></p>
+
+      <button type="submit">Log in</button>
+    </form>
+  </div>
+</main>
+
+<style>
+  .card {
+    max-width: 28rem;
+    background-color: #fff;
+    border-radius: 0.5rem;
+    box-shadow: 0 0 1rem rgba(0, 0, 0, 0.1);
+    margin: 2rem auto;
+    padding: 2rem;
+  }
+
+  form {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+
+    p {
+      color: rgb(188, 44, 44);
+      font-size: 0.8rem;
+    }
+  }
+</style>
+
+<script>
+  const errorTextBox = document.getElementById('error');
+  const form = document.querySelector('form');
+
+  form.addEventListener('submit', async (event) => {
+    event.preventDefault(); // Prevent the default form submission
+
+    const formData = new FormData(form);
+    const data = Object.fromEntries(formData.entries());
+
+    try {
+      const response = await fetch('/api/login', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(data),
+      });
+
+      if (response.ok) {
+        window.location.href = '/';
+      } else {
+        const errorText = await response.json();
+        console.error('Error:', errorText.message);
+        errorTextBox.textContent = errorText.message;
+      }
+    } catch (error) {
+      console.error('Error:', error);
+      alert('An error occurred while logging in. Please try again later.');
+    }
+  });
+</script>

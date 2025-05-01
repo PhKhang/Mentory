@@ -1,0 +1,75 @@
+generator client {
+  provider = "prisma-client-js"
+  output   = "../../node_modules/.prisma/client"
+}
+
+datasource db {
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
+}
+
+model User {
+  id                   String              @id @default(uuid())
+  firebaseId           String              @unique
+  firstName            String
+  lastName             String
+  email                String              @unique
+  createdAt            DateTime            @default(now())
+  updatedAt            DateTime            @updatedAt
+  profile              Profile?
+  sentRequests         MentorshipRequest[] @relation("SentRequests")
+  receivedRequests     MentorshipRequest[] @relation("ReceivedRequests")
+  testimonialsWritten  Testimonial[]       @relation("WrittenTestimonials")
+  testimonialsReceived Testimonial[]       @relation("ReceivedTestimonials")
+}
+
+model Profile {
+  id          String   @id @default(uuid())
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId      String   @unique
+  role        Role
+  skills      String?
+  interests   String?
+  bio         String?
+  location    String?
+  jobTitle    String?
+  rating      Float    @default(0.0)
+  reviewCount Int      @default(0)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model MentorshipRequest {
+  id         String        @id @default(uuid())
+  fromUser   User          @relation("SentRequests", fields: [fromUserId], references: [id], onDelete: Cascade)
+  fromUserId String
+  toUser     User          @relation("ReceivedRequests", fields: [toUserId], references: [id], onDelete: Cascade)
+  toUserId   String
+  status     RequestStatus @default(PENDING)
+  createdAt  DateTime      @default(now())
+  updatedAt  DateTime      @updatedAt
+}
+
+model Testimonial {
+  id         String   @id @default(uuid())
+  fromUser   User     @relation("WrittenTestimonials", fields: [fromUserId], references: [id], onDelete: Cascade)
+  fromUserId String
+  toUser     User     @relation("ReceivedTestimonials", fields: [toUserId], references: [id], onDelete: Cascade)
+  toUserId   String
+  content    String
+  rating     Int
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+}
+
+enum Role {
+  MENTOR
+  MENTEE
+}
+
+enum RequestStatus {
+  PENDING
+  ACCEPTED
+  DECLINED
+}
