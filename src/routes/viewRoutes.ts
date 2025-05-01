@@ -1,6 +1,7 @@
 import { Request, Response, Router } from "express";
 import { auth } from "../config/firebase";
 import { engine } from "express-handlebars";
+import { profile } from "console";
 
 const viewRouter = Router();
 
@@ -17,32 +18,11 @@ viewRouter.get("/", (req: Request, res: Response) => {
 viewRouter.get("/login", (req: Request, res: Response) => {
   return res.render("login", {});
 });
-  
 
 viewRouter.get("/register", (req: Request, res: Response) => {
   return res.render("register", {});
-  
-  res.send(`
-       <button id="loginBtn">Register</button>
-  
-    <script>
-      document.getElementById('loginBtn').addEventListener('click', async () => {
-        try {
-          const res = await fetch('api/register', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ email: 'trannguyenphuckhang12@gmail.com', password: 'Password1234' })
-          });
-  
-          const data = await res.json();
-          alert(data);  // Display the response message
-        } catch (error) {
-          alert('Login failed!');
-        }
-      });
-    </script>
-      `);
 });
+0;
 
 viewRouter.get("/logout", (req: Request, res: Response) => {
   res.send(
@@ -64,6 +44,30 @@ viewRouter.get("/logout", (req: Request, res: Response) => {
         });
       `
   );
+});
+
+viewRouter.get("/profile", (req: Request, res: Response) => {
+  const user = auth.currentUser;
+  res.render("profile", {
+    firstName: "Alex",
+    lastName: "Johnson",
+    email: "mail.com",
+    profilePic: "https://cultivatedculture.com/wp-content/uploads/2019/12/LinkedIn-Profile-Picture-Example-Sami-Viitama%CC%88ki-.jpeg",
+    jobTitle: "Senior Software Engineer",
+    location: "San Francisco, CA",
+    rating: 4.5,
+    testimonials: [
+    ],
+    role: "Mentor",
+    bio: "10+ years of experience in full-stack development. Passionate about mentoring junior developers and helping them grow in their careers. I've worked at several tech companies and have experience building scalable applications.",
+    skills: ["JavaScript", "React", "Node.js", "System Design"],
+    interests: [
+      "Teaching",
+      "Open Source",
+      "Career Development",
+      "System Architecture",
+    ],
+  });
 });
 
 export default viewRouter;

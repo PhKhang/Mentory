@@ -34,6 +34,8 @@ model Profile {
   bio         String?
   location    String?
   jobTitle    String?
+  education   String?
+  experience  Int?
   rating      Float    @default(0.0)
   reviewCount Int      @default(0)
   createdAt   DateTime @default(now())

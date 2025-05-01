@@ -4,7 +4,8 @@
   font-size: 15px;
   
   --background-color: #f5fdfa;
-  --text-color: #000000;
+  --secondary-background-color: #31dca5;
+  --text-color: hsl(217, 19%, 18%);
   --link-color: #007bff;
   --header-background: #f8f9fa;
   --card-background: #ffffff;
@@ -15,11 +16,11 @@
 }
 * {
   font-family: "Lexend Deca", sans-serif;
+  color: var(--text-color);
 }
 
 body {
   background-color: var(--background-color);
-  color: var(--text-color);
   margin: 0;
   padding: 0;
   
@@ -36,6 +37,10 @@ body {
     border: 1px solid #ccc;
     border-radius: 0.5rem;
   }
+}
+
+p {
+  
 }
 
 .medium {

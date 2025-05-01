@@ -1,10 +1,10 @@
 import express, { Request, Response } from "express";
 import { engine } from "express-handlebars";
 import dotenv from "dotenv";
+import bodyParser from "body-parser";
 
 import apiRouter from "./routes/apiRoutes";
 import viewRouter from "./routes/viewRoutes";
-import bodyParser from "body-parser";
 
 dotenv.config();
 

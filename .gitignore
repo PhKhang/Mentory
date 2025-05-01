@@ -48,7 +48,7 @@ tmp-resolvers
 package-lock.json
 flow-typed
 yarn.lock
-orm/**/migrations/
+prisma/**/migrations/
 misc/**/migrations/
 databases/**/migrations/
 experimental/**/*.db

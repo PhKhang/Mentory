@@ -1,0 +1,264 @@
+<main>
+  <div class="card">
+    <div class="banner">
+      <div class="">
+        <div class="profile-image">
+          <img src="{{profilePic}}" alt="">
+        </div>
+      </div>
+
+      <div class="main-info">
+        <h2>{{firstName}} {{lastName}}</h2>
+        <h3>{{jobTitle}}</h3>
+        <h3><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32"
+            viewBox="0 0 24 24"><!-- Icon from Lucide by Lucide Contributors - https://github.com/lucide-icons/lucide/blob/main/LICENSE -->
+            <g fill="none" stroke="currentColor" stroke-linecap="round"
+              stroke-linejoin="round" stroke-width="2">
+              <path
+                d="M20 10c0 4.993-5.539 10.193-7.399 11.799a1 1 0 0 1-1.202 0C9.539 20.193 4 14.993 4 10a8 8 0 0 1 16 0" />
+              <circle cx="12" cy="10" r="3" />
+            </g>
+          </svg>{{location}}</h3>
+
+        <div class="pill">
+          <p>{{role}}</p>
+        </div>
+      </div>
+
+      <div class="connect-area">
+        <button>
+          <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32"
+            viewBox="0 0 24 24"><!-- Icon from Lucide by Lucide Contributors - https://github.com/lucide-icons/lucide/blob/main/LICENSE -->
+            <g fill="none" stroke="currentColor" stroke-linecap="round"
+              stroke-linejoin="round" stroke-width="2">
+              <path d="m11 17l2 2a1 1 0 1 0 3-3" />
+              <path
+                d="m14 14l2.5 2.5a1 1 0 1 0 3-3l-3.88-3.88a3 3 0 0 0-4.24 0l-.88.88a1 1 0 1 1-3-3l2.81-2.81a5.79 5.79 0 0 1 7.06-.87l.47.28a2 2 0 0 0 1.42.25L21 4" />
+              <path d="m21 3l1 11h-2M3 3L2 14l6.5 6.5a1 1 0 1 0 3-3M3 4h8" />
+            </g>
+          </svg>
+          Connect
+        </button>
+      </div>
+
+    </div>
+
+    <div class="other-info">
+      <h2>Bio</h2>
+      <p>{{bio}}</p>
+      <h2>Skills</h2>
+
+      <div class="skills-container">
+        {{#each skills}}
+        <div class="pill">{{this}}</div>
+        {{/each}}
+      </div>
+
+      <h2>Interests</h2>
+      <div class="interest-container">
+        {{#each interests}}
+        <div class="pill">{{this}}</div>
+        {{/each}}
+      </div>
+
+      <h2>Testimonials</h2>
+    </div>
+
+  </div>
+
+  <div class="overlay">
+    <div class="edit-container">
+      <div class="form-group">
+        <label for="firstName">First Name:</label>
+        <br>
+        <input type="text" id="firstName" value="{{firstName}}" required>
+      </div>
+      <div class="form-group">
+        <label for="lastName">Last Name:</label>
+        <br>
+        <input type="text" id="lastName" value="{{lastName}}" required>
+      </div>
+      <div class="form-group">
+        <label for="profilePic">Profile Picture URL:</label>
+        <br>
+        <input type="url" id="profilePic"
+          value="{{profilePic}}">
+      </div>
+      <div class="form-group">
+        <label for="jobTitle">Job Title:</label>
+        <br>
+        <input type="text" id="jobTitle" value="{{jobTitle}}">
+      </div>
+      <div class="form-group">
+        <label for="location">Location:</label>
+        <br>
+        <input type="text" id="location" value="{{location}}">
+      </div>
+      <div class="form-group">
+        <label for="role">Role:</label>
+        <br>
+        <input type="text" id="role" value="Mentor" readonly>
+      </div>
+      <div class="form-group">
+        <label for="bio">Bio:</label>
+        <br>
+        <textarea id="bio" rows="4">{{bio}}</textarea>
+      </div>
+    </div>
+  </div>
+</main>
+
+<style>
+  .overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+
+    background-color: rgba(208, 254, 238, 0.562);
+    backdrop-filter: blur(10px);
+
+    width: 100%;
+    min-height: 100%;
+    height: 100%;
+
+    .edit-container {
+      width: 100%;
+      max-width: 40rem;
+      margin: auto;
+
+      input[type="text"],
+      {}
+
+    textarea {
+      border-radius: .5rem;
+      border: 1px solid #ccc;
+
+      overflow: hidden;
+    }
+  }
+  }
+
+  .pill {
+    border-radius: 9999px;
+  }
+
+  main {
+    height: 100%;
+    padding: 1rem;
+
+    svg {
+      color: inherit;
+    }
+  }
+
+  .banner {
+    width: 100%;
+    background-color: var(--secondary-background-color);
+    margin: 0;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+
+    .profile-image {
+      width: 8rem;
+      aspect-ratio: 1/1;
+      border-radius: 50%;
+      overflow: hidden;
+      border: 3px solid var(--background-color);
+      margin: .8rem;
+
+      img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      }
+    }
+
+    .main-info {
+      margin: .8rem;
+
+      svg {
+        height: .8rem;
+        width: min-content;
+        margin-right: 0.2rem;
+      }
+
+      h3 {
+        font-weight: normal;
+        font-size: small;
+      }
+
+      .pill {
+        font-size: small;
+        width: fit-content;
+        padding: 0rem .4rem;
+        background-color: var(--button-background);
+      }
+    }
+
+    .connect-area {
+      align-items: center;
+      display: flex;
+      margin: .8rem;
+
+      svg {
+        height: .9rem;
+        width: min-content;
+      }
+
+      button {
+        color: var(--text-color);
+        height: auto;
+        width: auto
+      }
+    }
+  }
+
+  .other-info {
+    padding: .8rem;
+
+    .skills-container {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+
+      .pill {
+        font-size: small;
+        width: fit-content;
+        height: 1.2rem;
+        padding: 0rem .4rem;
+
+        background-color: var(--secondary-background-color);
+      }
+    }
+
+    .interest-container {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+
+      .pill {
+        font-size: small;
+        width: fit-content;
+        height: 1.2rem;
+        padding: 0rem .4rem;
+
+        background-color: #e5e7eb;
+      }
+    }
+  }
+
+  .card {
+    height: 100%;
+    overflow-y: hidden;
+
+    width: 100%;
+    max-width: 60rem;
+    background-color: #fff;
+    border-radius: 0.5rem;
+    box-shadow: 0 0 1rem rgba(0, 0, 0, 0.1);
+    margin: 2rem auto;
+
+    overflow: hidden;
+  }
+</style>
