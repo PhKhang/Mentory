@@ -15,6 +15,7 @@ model User {
   firstName            String
   lastName             String
   email                String              @unique
+  passwordHash         String
   createdAt            DateTime            @default(now())
   updatedAt            DateTime            @updatedAt
   sentRequests         MentorshipRequest[] @relation("SentRequests")
