@@ -1,18 +1,18 @@
 import { Request, Response, Router } from "express";
 import { auth } from "../config/firebase";
 import { engine } from "express-handlebars";
-import { profile } from "console";
+import { getProfilePage } from "../controllers/userController";
 
 const viewRouter = Router();
 
 viewRouter.get("/", (req: Request, res: Response) => {
   const user = auth.currentUser;
-  // return res.render("home", {});
-  if (user) {
-    res.send(`Hello ${user.email}`);
-  } else {
-    res.send("Hello Guest");
-  }
+  return res.render("home", {});
+  // if (user) {
+  //   res.send(`Hello ${user.email}`);
+  // } else {
+  //   res.send("Hello Guest");
+  // }
 });
 
 viewRouter.get("/login", (req: Request, res: Response) => {
@@ -46,18 +46,20 @@ viewRouter.get("/logout", (req: Request, res: Response) => {
   );
 });
 
-viewRouter.get("/profile", (req: Request, res: Response) => {
+viewRouter.get("/profile", getProfilePage);
+
+viewRouter.get("/me", (req: Request, res: Response) => {
   const user = auth.currentUser;
   res.render("profile", {
     firstName: "Alex",
     lastName: "Johnson",
     email: "mail.com",
-    profilePic: "https://cultivatedculture.com/wp-content/uploads/2019/12/LinkedIn-Profile-Picture-Example-Sami-Viitama%CC%88ki-.jpeg",
+    profilePic:
+      "https://cultivatedculture.com/wp-content/uploads/2019/12/LinkedIn-Profile-Picture-Example-Sami-Viitama%CC%88ki-.jpeg",
     jobTitle: "Senior Software Engineer",
     location: "San Francisco, CA",
     rating: 4.5,
-    testimonials: [
-    ],
+    testimonials: [],
     role: "Mentor",
     bio: "10+ years of experience in full-stack development. Passionate about mentoring junior developers and helping them grow in their careers. I've worked at several tech companies and have experience building scalable applications.",
     skills: ["JavaScript", "React", "Node.js", "System Design"],

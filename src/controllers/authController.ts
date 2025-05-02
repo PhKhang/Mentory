@@ -10,6 +10,7 @@ import prisma from "../config/prisma";
 
 const getUser = async (req: Request, res: Response) => {
   const user = auth.currentUser;
+  authAdmin.updateUser
   if (user) {
     res.status(200).json({ message: "User is logged in", user });
   } else {
@@ -42,11 +43,7 @@ const register = async (req: Request, res: Response) => {
     "first-name": firstName,
     "last-name": lastName,
   } = req.body;
-  // const { email, password } = {
-  //   email: "trannguyenphuckhang12@gmail.com",
-  //   password: "Password1234",
-  // };
-  
+
   console.log("Registering user:", req.body);
 
   if (!["MENTOR", "MENTEE"].includes(role)) {
@@ -61,10 +58,6 @@ const register = async (req: Request, res: Response) => {
       email,
       password
     );
-
-    // updateProfile(userCredential.user, {
-    //   displayName: `${firstName} ${lastName}`,
-    // });
 
     const user = userCredential;
     const usr = await prisma.user.create({
@@ -94,10 +87,6 @@ const register = async (req: Request, res: Response) => {
 
 const login = async (req: Request, res: Response) => {
   const { email, password } = req.body;
-  // const { email, password } = {
-  //   email: "trannguyenphuckhang12@gail.com",
-  //   password: "Password1234",
-  // };
   try {
     const userCredential = await signInWithEmailAndPassword(
       auth,
@@ -105,10 +94,12 @@ const login = async (req: Request, res: Response) => {
       password
     );
     const user = userCredential.user;
+    console.log("User logged in successfully");
     res.status(200).json({ message: "User logged in successfully", user });
   } catch (error: any) {
     const errorCode = error.code;
     const errorMessage = error.message;
+    console.error("Error logging in user:", errorCode, errorMessage);
     res.status(400).json({ message: "Wrong password or email" });
   }
 };

@@ -1,6 +1,6 @@
 generator client {
   provider = "prisma-client-js"
-  output   = "../../node_modules/.prisma/client"
+  output   = "../node_modules/.prisma/client"
 }
 
 datasource db {
@@ -17,52 +17,53 @@ model User {
   email                String              @unique
   createdAt            DateTime            @default(now())
   updatedAt            DateTime            @updatedAt
-  profile              Profile?
   sentRequests         MentorshipRequest[] @relation("SentRequests")
   receivedRequests     MentorshipRequest[] @relation("ReceivedRequests")
+  profile              Profile?
   testimonialsWritten  Testimonial[]       @relation("WrittenTestimonials")
   testimonialsReceived Testimonial[]       @relation("ReceivedTestimonials")
 }
 
 model Profile {
   id          String   @id @default(uuid())
-  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId      String   @unique
   role        Role
-  skills      String?
-  interests   String?
-  bio         String?
-  location    String?
-  jobTitle    String?
-  education   String?
-  experience  Int?
+  imageUrl    String?  @default("")
+  bio         String?  @default("")
+  location    String?  @default("")
+  jobTitle    String?  @default("")
   rating      Float    @default(0.0)
   reviewCount Int      @default(0)
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
+  education   String?  @default("")
+  experience  Int?
+  interests   String?  @default("")
+  skills      String?  @default("")
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
 
 model MentorshipRequest {
   id         String        @id @default(uuid())
-  fromUser   User          @relation("SentRequests", fields: [fromUserId], references: [id], onDelete: Cascade)
   fromUserId String
-  toUser     User          @relation("ReceivedRequests", fields: [toUserId], references: [id], onDelete: Cascade)
   toUserId   String
   status     RequestStatus @default(PENDING)
   createdAt  DateTime      @default(now())
   updatedAt  DateTime      @updatedAt
+  fromUser   User          @relation("SentRequests", fields: [fromUserId], references: [id], onDelete: Cascade)
+  toUser     User          @relation("ReceivedRequests", fields: [toUserId], references: [id], onDelete: Cascade)
 }
 
 model Testimonial {
   id         String   @id @default(uuid())
-  fromUser   User     @relation("WrittenTestimonials", fields: [fromUserId], references: [id], onDelete: Cascade)
   fromUserId String
-  toUser     User     @relation("ReceivedTestimonials", fields: [toUserId], references: [id], onDelete: Cascade)
   toUserId   String
   content    String
   rating     Int
   createdAt  DateTime @default(now())
   updatedAt  DateTime @updatedAt
+  fromUser   User     @relation("WrittenTestimonials", fields: [fromUserId], references: [id], onDelete: Cascade)
+  toUser     User     @relation("ReceivedTestimonials", fields: [toUserId], references: [id], onDelete: Cascade)
 }
 
 enum Role {

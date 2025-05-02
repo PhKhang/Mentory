@@ -1,39 +1,71 @@
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🌱</text></svg>">
-    <link rel="stylesheet" href="style.css" />
-    <title>{{title}}</title>
-  </head>
-  <body>
-    <header>
-      <nav class="navbar">
-        <div class="logo">Mentory</div>
-        <ul class="nav-links">
-          <li><a href="/">Home</a></li>
-          <li><a href="/about">About</a></li>
-          <li><a href="/contact">Contact</a></li>
-        </ul>
-      </nav>
-    {{{body}}}
-  </body>
-  
-  <style>
-    .navbar {
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="icon"
+    href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🌱</text></svg>">
+  <link rel="stylesheet" href="/style.css" />
+  <script defer
+    src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+  <script defer
+    src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
+  <script defer
+    src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
+  <script defer src="./init-firebase.js"></script>
+  <title>{{title}}</title>
+</head>
+
+<body>
+  <header>
+    <nav class="navbar">
+      <div class="logo">Mentory</div>
+      <ul class="nav-links">
+        <li><a href="/">Home</a></li>
+        <li><a href="/about">About</a></li>
+        <li><a href="/contact">Contact</a></li>
+      </ul>
+    </nav>
+  </header>
+  {{{body}}}
+  <button onclick="a()"></button>
+</body>
+
+<style>
+  .navbar {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    align-items: center;
+    padding: 1rem 2rem;
+
+    .nav-links {
+      list-style: none;
+      justify-content: start;
       display: flex;
-      justify-content: space-between;
-      flex-wrap: wrap;
-      align-items: center;
-      padding: 1rem 2rem;
-      
-      .nav-links {
-        list-style: none;
-        justify-content: start;
-        display: flex;
-        flex-direction: row;
-        gap: 2rem;
-      }
+      flex-direction: row;
+      gap: 2rem;
     }
-  </style>
+  }
+</style>
+
+
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    const a = async () => {
+      console.log("Initializing auth");
+      try {
+        const userCredential = await firebase.auth().signInWithCustomToken("trannguyenphuckhang12@gmail.com");
+        const user = userCredential.user;
+        console.log("User signed in:", user);
+      }
+      catch (error) {
+        console.error("Error signing in:", error);
+      }
+
+    };
+    a();
+  });
+</script>
+
 </html>

@@ -21,15 +21,20 @@ app.engine(
     runtimeOptions: {
       allowProtoPropertiesByDefault: true,
     },
+    helpers: {
+      json: (context: any) => {
+        return JSON.stringify(context);
+      },
+    },
   })
 );
 app.set("view engine", "hbs");
 app.set("views", "./src/views");
 
-app.use(express.static('./src/public'))
+app.use(express.static("./src/public"));
 
-var jsonParser = bodyParser.json()
-var urlencodedParser = bodyParser.urlencoded({ extended: false })
+var jsonParser = bodyParser.json();
+var urlencodedParser = bodyParser.urlencoded({ extended: false });
 app.use(jsonParser);
 app.use(urlencodedParser);
 

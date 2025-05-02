@@ -9,7 +9,11 @@
 
       <div class="main-info">
         <h2>{{firstName}} {{lastName}}</h2>
+        {{#if jobTitle }}
         <h3>{{jobTitle}}</h3>
+        {{/if}}
+        
+        {{#if location}}
         <h3><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32"
             viewBox="0 0 24 24"><!-- Icon from Lucide by Lucide Contributors - https://github.com/lucide-icons/lucide/blob/main/LICENSE -->
             <g fill="none" stroke="currentColor" stroke-linecap="round"
@@ -19,6 +23,7 @@
               <circle cx="12" cy="10" r="3" />
             </g>
           </svg>{{location}}</h3>
+        {{/if}}
 
         <div class="pill">
           <p>{{role}}</p>
@@ -45,29 +50,50 @@
 
     <div class="other-info">
       <h2>Bio</h2>
+      {{#if bio}}
       <p>{{bio}}</p>
+      {{else}}
+      <p>No bio available</p>
+      {{/if}}
+      
       <h2>Skills</h2>
-
+      {{#if skills}}
       <div class="skills-container">
         {{#each skills}}
         <div class="pill">{{this}}</div>
         {{/each}}
       </div>
+      {{else}}
+      <p>No skills available</p>
+      {{/if}}
 
       <h2>Interests</h2>
+      {{#if interests}}
       <div class="interest-container">
         {{#each interests}}
         <div class="pill">{{this}}</div>
         {{/each}}
       </div>
+      {{else}}
+      <p>No interests available</p>
+      {{/if}}
 
       <h2>Testimonials</h2>
+      {{#if testimonials}}
+      p
+      {{else}}
+      <p>No testimonials available</p>
+      {{/if}}
+      
+      
     </div>
 
   </div>
 
   <div class="overlay">
+    
     <div class="edit-container">
+      <h2>Basic info</h2>
       <div class="form-group">
         <label for="firstName">First Name:</label>
         <br>
@@ -81,8 +107,7 @@
       <div class="form-group">
         <label for="profilePic">Profile Picture URL:</label>
         <br>
-        <input type="url" id="profilePic"
-          value="{{profilePic}}">
+        <input type="url" id="profilePic" value="{{profilePic}}">
       </div>
       <div class="form-group">
         <label for="jobTitle">Job Title:</label>
@@ -104,18 +129,54 @@
         <br>
         <textarea id="bio" rows="4">{{bio}}</textarea>
       </div>
+
+      <h2>Skills and interests</h2>
+      <h3>Your skills</h3>
+      <div class="group skills-group">
+        <div class="pill">
+          <div class="">
+            JavaScript
+            <button>X</button>
+          </div>
+        </div>
+      </div>
+      <form action="" class="skills-form">
+        <input type="text" name="skills">
+        <button type="submit">Add</button>
+      </form>
+
+      <h3>Your interests</h3>
+      <div class="group interests-group">
+        <div class="pill">
+          <div class="">
+            JavaScript
+            <button>X</button>
+          </div>
+        </div>
+      </div>
+
+      <form action="" class="interests-form">
+        <input type="text" name="interests">
+        <button type="submit">Add</button>
+      </form>
+
+      <div class="button-container">
+        <button id="save">Save changes</button>
+      </div>
     </div>
+    
   </div>
 </main>
 
 <style>
   .overlay {
+    {{!-- display: none; --}}
     position: absolute;
     top: 0;
     left: 0;
 
     background-color: rgba(208, 254, 238, 0.562);
-    backdrop-filter: blur(10px);
+    backdrop-filter: blur(50px);
 
     width: 100%;
     min-height: 100%;
@@ -134,6 +195,65 @@
       border: 1px solid #ccc;
 
       overflow: hidden;
+
+      width: 100%;
+    }
+    
+  }
+
+  .group {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+
+    margin-bottom: 1rem;
+  }
+
+  .skills-group {
+    .pill {
+      font-size: small;
+      width: fit-content;
+      height: fit-content;
+      padding: 2px .4rem;
+
+      display: flex;
+      justify-items: center;
+
+      background-color: rgb(209, 250, 229);
+      border: 2px solid var(--button-background);
+
+      button {
+        height: min-content;
+        padding: 0;
+        background-color: transparent;
+        color: var(--text-color);
+        border: none;
+        margin-left: 0.2rem;
+      }
+    }
+  }
+
+  .interests-group {
+    .pill {
+      font-size: small;
+      width: fit-content;
+      height: fit-content;
+      padding: 2px .4rem;
+
+      display: flex;
+      justify-items: center;
+
+      background-color: rgb(209, 250, 229);
+      border: 2px solid var(--button-background);
+
+      button {
+        height: min-content;
+        padding: 0;
+        background-color: transparent;
+        color: var(--text-color);
+        border: none;
+        margin-left: 0.2rem;
+      }
     }
   }
   }
@@ -262,3 +382,122 @@
     overflow: hidden;
   }
 </style>
+
+<script>
+  const interests = {{{ json interests }}};
+  const skills = {{{ json skills }}};
+  
+  const skillsGroup = document.querySelector('.skills-group');
+  const interestsGroup = document.querySelector('.interests-group');
+  
+  const removeSkillItem = (index) => {
+    console.log("Removed item:", index);
+    if (index > -1) {
+      skills.splice(index, 1);
+    }
+    
+    reloadSkillList(skillsGroup, skills);
+  }
+  
+  const reloadSkillList = (htmlGroup) => {
+    htmlGroup.innerHTML = '';
+    skills.forEach((item, index) => {
+      const pill = document.createElement('div');
+      pill.className = 'pill';
+      pill.innerHTML = `<div>${item}<button onclick="removeSkillItem(${index})">X</button></div>`;
+      htmlGroup.appendChild(pill);
+    });
+  }
+  
+  const removeInterestItem = (index) => {
+    console.log("Removed item:", index);
+    if (index > -1) {
+      interests.splice(index, 1);
+    }
+    
+    reloadInterestList(interestsGroup, interests);
+  }
+  
+  const reloadInterestList = (htmlGroup) => {
+    htmlGroup.innerHTML = '';
+    interests.forEach((item, index) => {
+      const pill = document.createElement('div');
+      pill.className = 'pill';
+      pill.innerHTML = `<div>${item}<button onclick="removeInterestItem(${index})">X</button></div>`;
+      htmlGroup.appendChild(pill);
+    });
+  }
+  
+  reloadSkillList(skillsGroup, skills);
+  reloadInterestList(interestsGroup, interests);
+  
+  const skillsForm = document.querySelector('.skills-form');
+  const interestsForm = document.querySelector('.interests-form');
+  
+  skillsForm.addEventListener('submit', (e) => {
+    e.preventDefault();
+    const input = skillsForm.querySelector('input[name="skills"]');
+    const value = input.value.trim();
+    if (value) {
+      skills.push(value);
+      input.value = '';
+      reloadSkillList(skillsGroup, skills);
+    }
+  });
+  
+  interestsForm.addEventListener('submit', (e) => {
+    e.preventDefault();
+    const input = interestsForm.querySelector('input[name="interests"]');
+    const value = input.value.trim();
+    if (value) {
+      interests.push(value);
+      input.value = '';
+      reloadInterestList(interestsGroup, interests);
+    }
+  });
+  
+  const saveButton = document.getElementById('save');
+  
+  saveButton.addEventListener('click', () => {
+    const firstName = document.getElementById('firstName').value;
+    const lastName = document.getElementById('lastName').value;
+    const profilePic = document.getElementById('profilePic').value;
+    const jobTitle = document.getElementById('jobTitle').value;
+    const location = document.getElementById('location').value;
+    const bio = document.getElementById('bio').value;
+
+    console.log({
+      firstName,
+      lastName,
+      profilePic,
+      jobTitle,
+      location,
+      bio,
+      skills,
+      interests
+    });
+    
+    const response = fetch('/api/profile', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        firstName,
+        lastName,
+        profilePic,
+        jobTitle,
+        location,
+        bio,
+        skills,
+        interests
+      })
+    });
+    
+    if (response.ok) {
+      console.log('Profile updated successfully!');
+    } else {
+      console.error('Error updating profile:', response.statusText);
+    }
+  });
+</script>
