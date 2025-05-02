@@ -26,7 +26,7 @@ const search = async (req: Request, res: Response) => {
       where: {
         AND: [
           // do not include the current user
-          // (decoded as any)?.email ? { NOT: { email: (decoded as any)?.email } } : undefined,
+          (decoded as any)?.email ? { NOT: { email: (decoded as any)?.email } } : undefined,
           // filter by role, search and skill
           role ? { role: role as string } : undefined,
           search

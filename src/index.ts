@@ -40,11 +40,6 @@ app.use(jsonParser);
 app.use(urlencodedParser);
 app.use(cookieParser());
 
-app.use((err: any, req: any, res: any, next: any) => {
-  console.error(err);
-  res.status(err.status || 500).json({ message: err.message });
-});
-
 app.use("/", viewRouter);
 app.use("/api", apiRouter);
 

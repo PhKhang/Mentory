@@ -84,6 +84,9 @@
             <a href="mailto:{{this.fromUser.email}}">
               <button type="button">Send Email</button>
             </a>
+            {{else}}
+            <button
+              onclick="updateRequest('{{this.fromUser.id}}', 'ACCEPTED')">Accept</button>
           {{/if}}
         </div>
 

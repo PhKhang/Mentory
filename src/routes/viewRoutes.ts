@@ -15,7 +15,6 @@ viewRouter.get("/login", (req: Request, res: Response) => {
 viewRouter.get("/register", (req: Request, res: Response) => {
   return res.render("register", {});
 });
-0;
 
 viewRouter.get("/logout", (req: Request, res: Response) => {
   res.send(

@@ -177,7 +177,7 @@ const getProfilePage = async (req: Request, res: Response) => {
 
   if (!token) {
     console.log("No token");
-    res.status(401).redirect("/");
+    res.status(401).redirect("/register");
     return;
   }
 
@@ -186,6 +186,8 @@ const getProfilePage = async (req: Request, res: Response) => {
     decoded = jwt.verify(token, process.env.JWT_SECRET!);
   } catch (error) {
     console.error("Error verifying token:", error);
+    res.status(401).redirect("/register");
+    return;
   }
 
   var user;
@@ -326,7 +328,7 @@ const deleteProfile = async (req: Request, res: Response) => {
       where: { id: (decoded as any)?.id },
     });
     
-    res.clearCookie("access_token").status(200).json({ message: "Profile deleted successfully" }).redirect("/");
+    res.clearCookie("access_token").status(200).redirect("/");
     return;
   } catch (error) {
     console.error(error);
