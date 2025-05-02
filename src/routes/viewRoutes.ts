@@ -1,20 +1,12 @@
 import { Request, Response, Router } from "express";
-import { auth } from "../config/firebase";
+import jwt from "jsonwebtoken";
 import { engine } from "express-handlebars";
-import { getProfilePage } from "../controllers/userController";
+import { dashboard, getProfilePage } from "../controllers/userController";
 import { search } from "../controllers/searchController";
 
 const viewRouter = Router();
 
-viewRouter.get("/", (req: Request, res: Response) => {
-  const user = auth.currentUser;
-  return res.render("home", {});
-  // if (user) {
-  //   res.send(`Hello ${user.email}`);
-  // } else {
-  //   res.send("Hello Guest");
-  // }
-});
+viewRouter.get("/", dashboard);
 
 viewRouter.get("/login", (req: Request, res: Response) => {
   return res.render("login", {});

@@ -1,1 +1,208 @@
-<p>Hello world</p>
+<main>
+  <div class="dash-board">
+    <h1>Dashboard</h1>
+
+    <div class="card-container">
+      <div class="card">
+        <h2>Connections</h2>
+        <p>Your network</p>
+        <h3>{{connectionCount}}</h3>
+      </div>
+      <div class="card">
+        <h2>Pending request</h2>
+        <p>Awaiting response</p>
+        <h3>{{pendingCount}}</h3>
+      </div>
+    </div>
+
+    <h1>Connection Requests</h1>
+    <h2>Outgoing Requests</h2>
+    <p>Requests you have sent</p>
+    <div class="request-container">
+      {{#each outgoingRequests}}
+      <div class="request-card {{this.status}}">
+
+        <div class="profile-image">
+          <img src="{{this.toUser.profile.imageUrl}}" alt="">
+        </div>
+
+        <div class="main-info">
+          <h3 class="name">{{this.toUser.firstName}} {{this.toUser.lastName}}
+          </h3>
+          <small>{{this.toUser.profile.jobTitle}}</small>
+          <p class="bio">{{this.toUser.profile.bio}}</p>
+
+          <div class="pill status">
+            {{this.status}}
+          </div>
+
+          {{#if (eq this.status "PENDING")}}
+          <div class="button-container">
+            <button
+              onclick="">Remove</button>
+          </div>
+          {{else if (eq this.status "ACCEPTED")}}
+            <a href="mailto:{{this.toUser.email}}">
+              <button type="button">Send Email</button>
+            </a>
+          {{/if}}
+        </div>
+
+      </div>
+      {{/each}}
+    </div>
+    <h2>Incomming Requests</h2>
+    <p>Requests you have received</p>
+    <div class="request-container">
+      {{#each incommingRequests}}
+      <div class="request-card {{this.status}}">
+
+        <div class="profile-image">
+          <img src="{{this.fromUser.profile.imageUrl}}" alt="">
+        </div>
+
+        <div class="main-info">
+          <h3 class="name">{{this.fromUser.firstName}} {{this.fromUser.lastName}}
+          </h3>
+          <small>{{this.fromUser.profile.jobTitle}}</small>
+          <p class="bio">{{this.fromUser.profile.bio}}</p>
+
+          <div class="pill status">
+            {{this.status}}
+          </div>
+
+          {{#if (eq this.status "PENDING")}}
+          <div class="button-container">
+            <button
+              onclick="updateRequest('{{this.fromUser.id}}', 'ACCEPTED')">Accept</button>
+            <button class="decline"
+              onclick="updateRequest('{{this.fromUser.id}}', 'DECLINED')">Decline</button>
+          </div>
+          {{else if (eq this.status "ACCEPTED")}}
+            <button class="decline"
+              onclick="updateRequest('{{this.fromUser.id}}', 'DECLINED')">Decline</button>
+            <a href="mailto:{{this.fromUser.email}}">
+              <button type="button">Send Email</button>
+            </a>
+          {{/if}}
+        </div>
+
+      </div>
+      {{/each}}
+
+    </div>
+  </div>
+</main>
+
+<script>
+  const ls = {{{ json user }}};
+
+  const updateRequest = async (id, status) => {
+    console.log("Update request: ", id, status);
+    const response = await fetch(`/api/update-request`, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        id: id,
+        status: status,
+      })
+    });
+
+    if (response.ok) {
+      const data = await response.json();
+      console.log("Updated request: ", data);
+    } else {
+      console.error("Error updating request: ", response.statusText);
+    }
+  }
+  
+</script>
+
+<style>
+  pre {
+    white-space: pre-wrap;
+    word-wrap: break-word
+  }
+
+  main {
+    height: 100%;
+    padding: 1rem;
+
+    .dash-board {
+      width: 100%;
+      max-width: 70rem;
+      margin: 1rem auto;
+    }
+  }
+
+  .card-container {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    gap: 1rem;
+    flex-wrap: wrap;
+  }
+
+  .card {
+    flex: 0 0 auto;
+
+    width: 28rem;
+    max-width: 100%;
+    height: fit-content;
+    background-color: #fff;
+    border-radius: 0.5rem;
+    box-shadow: 0 0 1rem rgba(0, 0, 0, 0.1);
+    margin: 2rem auto;
+    padding: 1rem;
+  }
+
+  .request-card {
+    background-color: #fff;
+    border-radius: 0.5rem;
+    box-shadow: 0 0 1rem rgba(0, 0, 0, 0.1);
+    padding: 1rem;
+
+    .profile-image {
+      width: 6rem;
+      aspect-ratio: 1/1;
+      border-radius: 50%;
+      overflow: hidden;
+      border: 3px solid var(--background-color);
+      margin: .8rem;
+
+      img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      }
+    }
+  }
+  
+  .decline {
+    background-color: #f87171;
+    color: #fff;
+    
+    &:hover {
+      background-color: #ef4444;
+    }
+  }
+  
+  .DECLINED {
+    background-color: #ffc4c4;
+  }
+  
+  .ACCEPTED {
+    background-color: #bbf7d0;
+  }
+  
+  .pill {
+    border-radius: 9999px;
+    border: 2px solid var(--text-color);
+    width: fit-content;
+    padding: 2px 0.5rem;
+    
+    margin-bottom: .5rem;
+  }
+</style>

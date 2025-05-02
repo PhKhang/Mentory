@@ -26,7 +26,7 @@
 
         <a class="main-profile" href="/profile/{{this.id}}">
           <div class="profile-image">
-            <img src="" alt="">
+            <img src="{{this.profile.imageUrl}}" alt="">
           </div>
 
           <h3 class="name">{{this.firstName}} {{this.lastName}}</h3>
@@ -55,6 +55,11 @@
             <div class="skill-container">
 
             </div>
+
+            {{!--
+            <pre>
+              {{json this.receivedRequests}}
+            </pre> --}}
           </div>
 
           <div class="button-container">
@@ -73,8 +78,25 @@
 </main>
 
 <script>
-  const connect = (id) => {
+  const connect = async (id) => {
     console.log("Connect to: ", id);
+
+    const response = await fetch(`/api/connect`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        id: id
+      })
+    })
+
+    if (response.ok) {
+      const data = await response.json();
+      console.log("Connected: ", data);
+    } else {
+      console.error("Error connecting: ", response.statusText);
+    }
   }
 </script>
 
@@ -82,10 +104,11 @@
   main {
     height: 100%;
     padding: 1rem;
+    margin: 0;
 
     .browse-container {
       width: 100%;
-      max-width: 60rem;
+      max-width: 70rem;
       margin: 1rem auto;
     }
   }
@@ -163,6 +186,12 @@
 
       h5 {
         margin-top: 0.5rem;
+      }
+
+      pre {
+        text-align: left;
+        position: absolute;
+        color: rebeccapurple;
       }
 
       .bio {

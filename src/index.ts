@@ -25,6 +25,7 @@ app.engine(
       json: (context: any) => {
         return JSON.stringify(context);
       },
+      eq: (a: any, b: any) => a === b,
     },
   })
 );

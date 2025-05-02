@@ -16,11 +16,11 @@
 <body>
   <header>
     <nav class="navbar">
-      <div class="logo">Mentory</div>
+      <div class="logo"><a href="/"><h1>Mentory</h1></a></div>
       <ul class="nav-links">
         <li><a href="/">Home</a></li>
-        <li><a href="/about">About</a></li>
-        <li><a href="/contact">Contact</a></li>
+        <li><a href="/browse">Browse</a></li>
+        <li><a href="/profile">Me</a></li>
       </ul>
     </nav>
   </header>
@@ -35,6 +35,12 @@
     align-items: center;
     padding: 1rem 2rem;
 
+    .logo {
+      a {
+        text-decoration: none;
+      }
+    }
+
     .nav-links {
       list-style: none;
       justify-content: start;
@@ -44,4 +50,5 @@
     }
   }
 </style>
+
 </html>

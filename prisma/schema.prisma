@@ -53,6 +53,8 @@ model MentorshipRequest {
   updatedAt  DateTime      @updatedAt
   fromUser   User          @relation("SentRequests", fields: [fromUserId], references: [id], onDelete: Cascade)
   toUser     User          @relation("ReceivedRequests", fields: [toUserId], references: [id], onDelete: Cascade)
+  
+  @@unique([fromUserId, toUserId])
 }
 
 model Testimonial {

@@ -54,6 +54,8 @@ const search = async (req: Request, res: Response) => {
       },
       include: {
         profile: true,
+        receivedRequests: true,
+        // sentRequests: true,
       },
     });
   } catch (error) {
