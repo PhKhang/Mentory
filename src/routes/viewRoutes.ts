@@ -2,6 +2,7 @@ import { Request, Response, Router } from "express";
 import { auth } from "../config/firebase";
 import { engine } from "express-handlebars";
 import { getProfilePage } from "../controllers/userController";
+import { search } from "../controllers/searchController";
 
 const viewRouter = Router();
 
@@ -46,30 +47,9 @@ viewRouter.get("/logout", (req: Request, res: Response) => {
   );
 });
 
+viewRouter.get("/profile/:id", getProfilePage);
 viewRouter.get("/profile", getProfilePage);
 
-viewRouter.get("/me", (req: Request, res: Response) => {
-  const user = auth.currentUser;
-  res.render("profile", {
-    firstName: "Alex",
-    lastName: "Johnson",
-    email: "mail.com",
-    profilePic:
-      "https://cultivatedculture.com/wp-content/uploads/2019/12/LinkedIn-Profile-Picture-Example-Sami-Viitama%CC%88ki-.jpeg",
-    jobTitle: "Senior Software Engineer",
-    location: "San Francisco, CA",
-    rating: 4.5,
-    testimonials: [],
-    role: "Mentor",
-    bio: "10+ years of experience in full-stack development. Passionate about mentoring junior developers and helping them grow in their careers. I've worked at several tech companies and have experience building scalable applications.",
-    skills: ["JavaScript", "React", "Node.js", "System Design"],
-    interests: [
-      "Teaching",
-      "Open Source",
-      "Career Development",
-      "System Architecture",
-    ],
-  });
-});
+viewRouter.get("/browse", search);
 
 export default viewRouter;

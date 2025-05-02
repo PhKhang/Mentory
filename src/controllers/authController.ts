@@ -15,7 +15,7 @@ const getUser = async (req: Request, res: Response) => {
     return 
   }
 
-  const decoded = jwt.verify(token, process.env.SECRET_KEY!)
+  const decoded = jwt.verify(token, process.env.JWT_SECRET!)
   console.log("Decoded token: ", decoded)
   console.log("Username: ", (decoded as any)?.username)
   res.json(decoded)
@@ -29,11 +29,11 @@ const verifyEmail = async (req: Request, res: Response) => {
     });
 
     if (userWithTheEmail) {
-      res.status(400).json({ message: "Email is already used" });
+      res.status(200).json({ message: "Email is already used" });
       return;
     }
 
-    res.status(200).json({ message: "Email is not used" });
+    res.status(400).json({ message: "Email is not used" });
   } catch (error: any) {
     const errorCode = error.code;
     const errorMessage = error.message;
@@ -42,13 +42,13 @@ const verifyEmail = async (req: Request, res: Response) => {
 };
 
 const createToken = (user: any, duration: any = "30d") => {
-  const payload = { id: "" };
+  const payload = { id: user?.id, email: user?.email };
   const secret: Secret = process.env.JWT_SECRET as string;
   const options: SignOptions = {
-    expiresIn: duration,
+    expiresIn: '30d',
   };
 
-  return jwt.sign(payload, secret, options);
+  return jwt.sign(payload, secret, {expiresIn: '30d'});
 };
 
 const register = async (req: Request, res: Response) => {

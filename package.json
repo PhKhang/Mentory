@@ -13,6 +13,7 @@
   "description": "",
   "devDependencies": {
     "@types/bcrypt": "^5.0.2",
+    "@types/cookie-parser": "^1.4.8",
     "@types/express": "^5.0.1",
     "@types/node": "^22.15.3",
     "express": "^5.1.0",
@@ -25,6 +26,7 @@
     "@prisma/client": "^6.7.0",
     "bcrypt": "^5.1.1",
     "body-parser": "^2.2.0",
+    "cookie-parser": "^1.4.7",
     "dotenv": "^16.5.0",
     "express-handlebars": "^8.0.1",
     "firebase": "^11.6.1",

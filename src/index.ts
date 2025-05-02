@@ -2,12 +2,12 @@ import express, { Request, Response } from "express";
 import { engine } from "express-handlebars";
 import dotenv from "dotenv";
 import bodyParser from "body-parser";
+import cookieParser from 'cookie-parser';
 
 import apiRouter from "./routes/apiRoutes";
 import viewRouter from "./routes/viewRoutes";
 
 dotenv.config();
-
 const app = express();
 const port = process.env.PORT || 4000;
 
@@ -37,6 +37,7 @@ var jsonParser = bodyParser.json();
 var urlencodedParser = bodyParser.urlencoded({ extended: false });
 app.use(jsonParser);
 app.use(urlencodedParser);
+app.use(cookieParser());
 
 app.use((err: any, req: any, res: any, next: any) => {
   console.error(err);

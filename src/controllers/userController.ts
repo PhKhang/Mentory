@@ -1,50 +1,71 @@
 import { Request, Response } from "express";
+import jwt from "jsonwebtoken";
 import prisma from "../config/prisma";
-import { auth } from "../config/firebase";
-import { updateProfile } from "firebase/auth";
 
 const getProfilePage = async (req: Request, res: Response) => {
   const userId = req.params.id;
+  console.log("User ID: ", userId);
   
+  // get current user from token
+  const token = req.cookies?.access_token;
+
+  if (!token) {
+    console.log("No token");
+    res.status(401).redirect("/");
+    return;
+  }
+
+  var decoded;
+  try {
+    decoded = jwt.verify(token, process.env.JWT_SECRET!);
+  } catch (error) {
+    console.error("Error verifying token:", error);
+  }
+
   var user;
+  var isEditable = false;
   
   if (!userId) {
-    const firebaseId = auth.currentUser?.uid;
-    if (!firebaseId) {
-      res.status(401).json({ message: "User is not logged in" });
+    if (!decoded) {
+      console.log("No user ID and no token");
+      res.status(401).redirect("/");
       return;
     }
     
     user = await prisma.user.findUnique({
-      where: { firebaseId: firebaseId },
+      where: { id: (decoded as any)?.id },
       include: {
-        profile:  true
+        profile: true,
       },
     });
-  }
-  else {
+  } else {
     user = await prisma.user.findUnique({
       where: { id: userId },
       include: {
-        profile:  true
+        profile: true,
       },
     });
   }
-  
-  
+
+  if (decoded && user?.id === (decoded as any)?.id) {
+    isEditable = true;
+  }
   res.render("profile", {
     firstName: user?.firstName,
     lastName: user?.lastName,
     email: user?.email,
     profilePic: user?.profile?.imageUrl,
-    jobTitle: user?.profile?.jobTitle,  
+    jobTitle: user?.profile?.jobTitle,
     location: user?.profile?.location,
     rating: user?.profile?.rating,
     testimonials: [],
     role: user?.profile?.role,
-    bio: user?.profile?.bio, 
-    skills: user?.profile?.skills ? user?.profile?.skills?.split(","): [], 
-    interests: user?.profile?.interests ? user?.profile?.interests?.split(",") : [],
+    bio: user?.profile?.bio,
+    skills: user?.profile?.skills ? user?.profile?.skills?.split(",") : [],
+    interests: user?.profile?.interests
+      ? user?.profile?.interests?.split(",")
+      : [],
+    isEditable: isEditable,
   });
 };
 
@@ -59,19 +80,28 @@ const editProfile = async (req: Request, res: Response) => {
     skills,
     interests,
   } = req.body;
-  
-  console.log("Received data:", req.body);
 
-  const user = auth.currentUser;
-  if (user) {
+  const token = req.cookies?.access_token;
+
+  if (!token) {
+    console.log("No token");
+    res.status(401).redirect("/");
+    return;
+  }
+
+  var decoded;
+  try {
+    decoded = jwt.verify(token, process.env.JWT_SECRET!);
+  } catch (error) {
+    console.error("Error verifying token:", error);
+    res.status(401).json({ error: "Invalid token" }).redirect("/");
+    return;
+  }
+
+  if (decoded) {
     try {
-      await updateProfile(user, {
-        displayName: `${firstName} ${lastName}`,
-        photoURL: profilePic,
-      });
-
       const updatedUser = await prisma.user.update({
-        where: { firebaseId: user.uid },
+        where: { id: (decoded as any)?.id },
         data: { firstName: firstName, lastName: lastName },
       });
 
@@ -99,6 +129,5 @@ const editProfile = async (req: Request, res: Response) => {
     res.status(401).json({ message: "User is not logged in" });
   }
 };
-
 
 export { getProfilePage, editProfile };

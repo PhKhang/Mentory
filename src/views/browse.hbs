@@ -1,0 +1,197 @@
+<main>
+  <div class="browse-container">
+    <h1>Find your perfect match</h1>
+
+    <div class="search-bar">
+      <input type="text" name="search" id="">
+
+      <label for="skill">
+        <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32"
+          viewBox="0 0 24 24"><!-- Icon from Lucide by Lucide Contributors - https://github.com/lucide-icons/lucide/blob/main/LICENSE -->
+          <path fill="none" stroke="var(--text-color)" stroke-linecap="round"
+            stroke-linejoin="round" stroke-width="2"
+            d="M22 3H2l8 9.46V19l4 2v-8.54z" />
+        </svg>
+      </label>
+      <select id="skill">
+        <option value="all">All</option>
+        <option value="javascript">JavaScript</option>
+      </select>
+    </div>
+
+    {{#if users.length}}
+    <div class="card-container">
+      {{#each users}}
+      <div class="card">
+
+        <a class="main-profile" href="/profile/{{this.id}}">
+          <div class="profile-image">
+            <img src="" alt="">
+          </div>
+
+          <h3 class="name">{{this.firstName}} {{this.lastName}}</h3>
+          <h4 class="job-title">{{this.profile.jobTitle}}</h4>
+          <div class="pill">{{this.profile.role}}</div>
+        </a>
+
+        <div class="side-profile">
+          <div class="">
+            <p class="bio">{{this.profile.bio}}</p>
+            {{#if this.profile.location}}
+            <p class="location">
+              <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32"
+                viewBox="0 0 24 24"><!-- Icon from Lucide by Lucide Contributors - https://github.com/lucide-icons/lucide/blob/main/LICENSE -->
+                <g fill="none" stroke="var(--text-color)" stroke-linecap="round"
+                  stroke-linejoin="round" stroke-width="2">
+                  <path
+                    d="M20 10c0 4.993-5.539 10.193-7.399 11.799a1 1 0 0 1-1.202 0C9.539 20.193 4 14.993 4 10a8 8 0 0 1 16 0" />
+                  <circle cx="12" cy="10" r="3" />
+                </g>
+              </svg>
+              {{this.profile.location}}
+            </p>
+            {{/if}}
+            <h5>Skills</h5>
+            <div class="skill-container">
+
+            </div>
+          </div>
+
+          <div class="button-container">
+            <button onclick="connect('{{this.id}}')">Connect</button>
+          </div>
+        </div>
+
+      </div>
+      {{/each}}
+    </div>
+    {{else}}
+    <h2>No users found</h2>
+    <p>Try adjusting your search criteria or check back later.</p>
+    {{/if}}
+  </div>
+</main>
+
+<script>
+  const connect = (id) => {
+    console.log("Connect to: ", id);
+  }
+</script>
+
+<style>
+  main {
+    height: 100%;
+    padding: 1rem;
+
+    .browse-container {
+      width: 100%;
+      max-width: 60rem;
+      margin: 1rem auto;
+    }
+  }
+
+  .card-container {
+    width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+
+    &>* {
+      flex: 0 0 auto;
+    }
+  }
+
+  .card {
+    max-width: 100%;
+    width: 30rem;
+    background-color: #fff;
+    border-radius: 0.5rem;
+    box-shadow: 0 0 1rem rgba(0, 0, 0, 0.1);
+    margin: 2rem auto;
+
+    display: flex;
+    flex-direction: row;
+
+    overflow: hidden;
+
+    .main-profile {
+      width: min-content;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      background-color: var(--secondary-background-color);
+      padding: .8rem;
+
+      text-decoration: none;
+
+      h3 {
+        margin-bottom: 0;
+        text-align: center;
+      }
+
+      h4 {
+        margin-top: 0.5rem;
+        font-weight: normal;
+        text-align: center;
+      }
+
+      .profile-image {
+        width: 8rem;
+        aspect-ratio: 1/1;
+        border-radius: 50%;
+        overflow: hidden;
+        border: 3px solid var(--background-color);
+        margin: .8rem;
+
+        img {
+          width: 100%;
+          height: 100%;
+          object-fit: cover;
+        }
+      }
+    }
+
+    .side-profile {
+      flex-grow: 0;
+      max-width: 100%;
+      width: 4rem;
+      flex: 1;
+      padding: 1rem;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+
+      h5 {
+        margin-top: 0.5rem;
+      }
+
+      .bio {
+        width: 100%;
+        max-width: 50rem;
+
+        margin-bottom: 1rem;
+        font-size: 0.9rem;
+        line-height: 1.4rem;
+
+        display: -webkit-box;
+        -webkit-line-clamp: 3;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+
+      .location {
+        font-size: 0.8rem;
+        margin-bottom: 1rem;
+
+        svg {
+          width: 1rem;
+          height: 1rem;
+          vertical-align: sub;
+        }
+      }
+
+      .button-container {}
+    }
+  }
+</style>
