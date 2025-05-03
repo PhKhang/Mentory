@@ -15,6 +15,13 @@ Mentory uses the following technologies:
 - **CSS** (2.3%): For styling the application.
 - **JavaScript** (0.6%): For additional scripting needs.
 
+Tech stack:
+- **Express.js + Handlebars**: Backend and templating
+- **jsonwebtoken + Bcrypt**: Authentication
+- **Prisma**: ORM
+- **Supabase**: PostgreSQL
+- **Azure Virtual Machines**: Hosting
+
 ## Setup Instructions
 
 Follow these steps to set up the project locally:
