@@ -51,7 +51,7 @@ The application should now be running on http://localhost:4000 (or the port spec
 
 ## Necessary Configurations
 
-1. **TypeScript Configuration**: The project uses a tsconfig.json file for TypeScript compiler options. The key configurations are:
+1. **TypeScript Configuration**: The project uses a `tsconfig.json` file for TypeScript compiler options. The key configurations are:
 
     Target: `ES6`\
     Module: `CommonJS`\
@@ -60,6 +60,8 @@ The application should now be running on http://localhost:4000 (or the port spec
     Exclude: `node_modules`\
     You can view the full `tsconfig.json` in the source code.
 
-2. **Environment Variables**: Check if the application requires any .env file for storing sensitive data like API keys or database credentials. Create a .env file in the root directory if necessary with the required variables
+2. **Environment Variables**: The project needs at least the following keys:
+- `JWT_SECRET`: for signing jwt
+- `DATABASE_URL`: for communication with a PostgreSQL database, Supabase can be used to create one
 
 ## Features
