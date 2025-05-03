@@ -28,28 +28,30 @@ Follow these steps to set up the project locally:
    ```bash
    npm install
    ```
-    
 3. **Compile TypeScript**: This project uses TypeScript. Compile the TypeScript files using:
-```bash
-npm run build
-```
+
+    ```bash
+    npm run build
+    ```
 
 4. **Run the application**: Start the application locally:
-```bash
-npm start
-```
+
+    ```bash
+    npm start
+    ```
 
 The application should now be running on http://localhost:4000 (or the port specified in your configuration).
 
 ## Necessary Configurations
+
 1. **TypeScript Configuration**: The project uses a tsconfig.json file for TypeScript compiler options. The key configurations are:
 
-Target: ES6
-Module: CommonJS
-Output Directory: ./dist
-Include: src/**/*.ts
-Exclude: node_modules
-You can view the full tsconfig.json here.
+    Target: `ES6`\
+    Module: `CommonJS`\
+    Output Directory: `./dist`\
+    Include: `src/**/*.ts`\
+    Exclude: `node_modules`\
+    You can view the full `tsconfig.json` in the source code.
 
 2. **Environment Variables**: Check if the application requires any .env file for storing sensitive data like API keys or database credentials. Create a .env file in the root directory if necessary with the required variables
 
