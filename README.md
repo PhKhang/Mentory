@@ -16,6 +16,7 @@ Mentory uses the following technologies:
 - **JavaScript** (0.6%): For additional scripting needs.
 
 Tech stack:
+
 - **Express.js + Handlebars**: Backend and templating
 - **jsonwebtoken + Bcrypt**: Authentication
 - **Prisma**: ORM
@@ -27,25 +28,45 @@ Tech stack:
 Follow these steps to set up the project locally:
 
 1. **Clone the repository**:
+
    ```bash
    git clone https://github.com/PhKhang/Mentory.git
    cd Mentory
    ```
-2. **Install dependencies**: Ensure you have Node.js installed. Then run:
+
+1. **Configure `.env` file**:
+
+   Copy the `.env.example` file to `.env` and fill in the necessary environment variables. This includes your database connection string, JWT secret, and any other required configurations.
+
    ```bash
-   npm install
+   cp .env.example .env
    ```
-3. **Compile TypeScript**: This project uses TypeScript. Compile the TypeScript files using:
 
-    ```bash
-    npm run build
-    ```
+   Then, open the `.env` file and fill in the required values.
 
-4. **Run the application**: Start the application locally:
+1. **Install dependencies**:
 
-    ```bash
-    npm start
-    ```
+   Ensure you have Node.js installed. Then run:
+
+   ```bash
+   npm i
+   ```
+
+1. **Compile TypeScript**:
+
+   This project uses TypeScript. Compile the TypeScript files using:
+
+   ```bash
+   npm run build
+   ```
+
+1. **Run the application**:
+
+   Start the application locally:
+
+   ```bash
+   npm start
+   ```
 
 The application should now be running on http://localhost:4000 (or the port specified in your configuration).
 
@@ -53,14 +74,15 @@ The application should now be running on http://localhost:4000 (or the port spec
 
 1. **TypeScript Configuration**: The project uses a `tsconfig.json` file for TypeScript compiler options. The key configurations are:
 
-    Target: `ES6`\
-    Module: `CommonJS`\
-    Output Directory: `./dist`\
-    Include: `src/**/*.ts`\
-    Exclude: `node_modules`\
-    You can view the full `tsconfig.json` in the source code.
+   Target: `ES6`\
+   Module: `CommonJS`\
+   Output Directory: `./dist`\
+   Include: `src/**/*.ts`\
+   Exclude: `node_modules`\
+   You can view the full `tsconfig.json` in the source code.
 
 2. **Environment Variables**: The project needs at least the following keys:
+
 - `JWT_SECRET`: for signing jwt
 - `DATABASE_URL`: for communication with a PostgreSQL database, Supabase can be used to create one
 
