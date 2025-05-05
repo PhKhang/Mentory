@@ -107,24 +107,6 @@
     }
   }
   
-  const searchForm = document.getElementById('searchForm');
-  searchForm.addEventListener('submit', async (e) => {
-    e.preventDefault();
-    const searchInput = document.getElementById('searchInput').value;
-    const skillSelect = document.getElementById('skill').value;
-
-    console.log("Search input: ", searchInput);
-    console.log("Skill select: ", skillSelect);
-
-    /*const response = await fetch(`/api/browse?search=${searchInput}&skill=${skillSelect}`);
-    if (response.ok) {
-      const data = await response.json();
-      console.log("Search results: ", data);
-      // Update the UI with the search results
-    } else {
-      console.error("Error fetching search results: ", response.statusText);
-    }*/
-  });
 </script>
 
 <style>
