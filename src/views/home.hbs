@@ -114,6 +114,7 @@
 
     if (response.ok) {
       console.log("Removed request ");
+      location.reload();
     } else {
       console.error("Error removing request: ", response.statusText);
     }
@@ -135,6 +136,7 @@
     if (response.ok) {
       const data = await response.json();
       console.log("Updated request: ", data);
+      location.reload();
     } else {
       console.error("Error updating request: ", response.statusText);
     }
@@ -156,6 +158,7 @@
       width: 100%;
       max-width: 70rem;
       margin: 1rem auto;
+      padding-bottom: 2rem;
     }
   }
 
