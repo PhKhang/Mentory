@@ -32,14 +32,14 @@ const search = async (req: Request, res: Response) => {
           search
             ? {
                 OR: [
-                  { name: { contains: search as string, mode: "insensitive" } },
-                  { bio: { contains: search as string, mode: "insensitive" } },
-                  {
-                    location: {
-                      contains: search as string,
-                      mode: "insensitive",
-                    },
-                  },
+                  { firstName: { contains: search as string, mode: "insensitive" } },
+                  { lastName: { contains: search as string, mode: "insensitive" } },
+                  // {
+                  //   profile: {
+                  //     contains: search as string,
+                  //     mode: "insensitive",
+                  //   },
+                  // },
                 ],
               }
             : undefined,
