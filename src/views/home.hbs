@@ -27,8 +27,10 @@
         </div>
 
         <div class="main-info">
-          <h3 class="name">{{this.toUser.firstName}} {{this.toUser.lastName}}
-          </h3>
+          <a href="/profile/{{this.toUser.id}}">
+            <h3 class="name">{{this.toUser.firstName}} {{this.toUser.lastName}}
+            </h3>
+          </a>
           <small>{{this.toUser.profile.jobTitle}}</small>
           <p class="bio">{{this.toUser.profile.bio}}</p>
 
@@ -42,9 +44,9 @@
               onclick="removeRequest('{{this.toUser.id}}')">Remove</button>
           </div>
           {{else if (eq this.status "ACCEPTED")}}
-            <a href="mailto:{{this.toUser.email}}">
-              <button type="button">Send Email</button>
-            </a>
+          <a href="mailto:{{this.toUser.email}}">
+            <button type="button">Send Email</button>
+          </a>
           {{/if}}
         </div>
 
@@ -62,8 +64,11 @@
         </div>
 
         <div class="main-info">
-          <h3 class="name">{{this.fromUser.firstName}} {{this.fromUser.lastName}}
-          </h3>
+          <a href="/profile/{{this.fromUser.id}}">
+            <h3 class="name">{{this.fromUser.firstName}}
+              {{this.fromUser.lastName}}
+            </h3>
+          </a>
           <small>{{this.fromUser.profile.jobTitle}}</small>
           <p class="bio">{{this.fromUser.profile.bio}}</p>
 
@@ -79,14 +84,14 @@
               onclick="updateRequest('{{this.fromUser.id}}', 'DECLINED')">Decline</button>
           </div>
           {{else if (eq this.status "ACCEPTED")}}
-            <button class="decline"
-              onclick="updateRequest('{{this.fromUser.id}}', 'DECLINED')">Decline</button>
-            <a href="mailto:{{this.fromUser.email}}">
-              <button type="button">Send Email</button>
-            </a>
-            {{else}}
-            <button
-              onclick="updateRequest('{{this.fromUser.id}}', 'ACCEPTED')">Accept</button>
+          <button class="decline"
+            onclick="updateRequest('{{this.fromUser.id}}', 'DECLINED')">Decline</button>
+          <a href="mailto:{{this.fromUser.email}}">
+            <button type="button">Send Email</button>
+          </a>
+          {{else}}
+          <button
+            onclick="updateRequest('{{this.fromUser.id}}', 'ACCEPTED')">Accept</button>
           {{/if}}
         </div>
 
@@ -141,7 +146,7 @@
       console.error("Error updating request: ", response.statusText);
     }
   }
-  
+
 </script>
 
 <style>
@@ -204,30 +209,30 @@
       }
     }
   }
-  
+
   .decline {
     background-color: #f87171;
     color: #fff;
-    
+
     &:hover {
       background-color: #ef4444;
     }
   }
-  
+
   .DECLINED {
     background-color: #ffc4c4;
   }
-  
+
   .ACCEPTED {
     background-color: #bbf7d0;
   }
-  
+
   .pill {
     border-radius: 9999px;
     border: 2px solid var(--text-color);
     width: fit-content;
     padding: 2px 0.5rem;
-    
+
     margin-bottom: .5rem;
   }
 </style>

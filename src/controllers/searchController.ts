@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
 import jwt from "jsonwebtoken";
 import prisma from "../config/prisma";
-import { Prisma } from "@prisma/client";
+import { Prisma, Role } from "@prisma/client";
 
 const search = async (req: Request, res: Response) => {
   var { search, role, skill } = req.query;
@@ -43,6 +43,16 @@ const search = async (req: Request, res: Response) => {
       );
     allSkills = [...new Set(allSkills)];
 
+    const roleMatch =
+      (search as string)?.toUpperCase() === "MENTOR" ||
+      (search as string)?.toUpperCase() === "MENTEE"
+        ? {
+            profile: {
+              role: (search as string).toUpperCase() as Role,
+            },
+          }
+        : undefined;
+
     users = await prisma.user.findMany({
       where: {
         AND: [
@@ -67,12 +77,7 @@ const search = async (req: Request, res: Response) => {
                       mode: "insensitive",
                     },
                   },
-                  // {
-                  //   profile: {
-                  //     contains: search as string,
-                  //     mode: "insensitive",
-                  //   },
-                  // },
+                  roleMatch,
                 ],
               }
             : undefined,
