@@ -31,9 +31,9 @@
       </div>
 
       <div class="connect-area">
-      {{#if isEditable}}
-      {{else}}
-        <button>
+        {{#if isEditable}}
+        {{else}}
+        <button onclick="connect('{{id}}')">
           <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32"
             viewBox="0 0 24 24"><!-- Icon from Lucide by Lucide Contributors - https://github.com/lucide-icons/lucide/blob/main/LICENSE -->
             <g fill="none" stroke="var(--button-text-color)"
@@ -46,7 +46,7 @@
           </svg>
           Connect
         </button>
-      {{/if}}
+        {{/if}}
       </div>
 
     </div>
@@ -190,14 +190,15 @@
   button {
     margin: .5rem;
   }
-  
+
   #delete {
     background-color: #f87171;
   }
-  
+
   #signout {
     background-color: #fbbf24;
   }
+
   .overlay {
     display: none;
     position: absolute;
@@ -373,6 +374,7 @@
           height: .9rem;
           width: min-content;
         }
+
         height: auto;
         width: auto
       }
@@ -429,6 +431,27 @@
 </style>
 
 <script>
+  const connect = async (id) => {
+    console.log("Connect to: ", id);
+
+    const response = await fetch(`/api/connect`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        id: id
+      })
+    })
+
+    if (response.ok) {
+      const data = await response.json();
+      console.log("Connected: ", data);
+    } else {
+      console.error("Error connecting: ", response.statusText);
+    }
+  }
+
   const signoutButton = document.getElementById('signout');
   signoutButton.addEventListener('click', async () => {
     const response = await fetch('/api/signout', {
@@ -445,7 +468,7 @@
       console.error('Error signing out:', response.statusText);
     }
   });
-  
+
   const deleteButton = document.getElementById('delete');
   deleteButton.addEventListener('click', async () => {
     const response = await fetch('/api/profile/delete', {
@@ -462,7 +485,7 @@
       console.error('Error deleting profile:', response.statusText);
     }
   });
-  
+
   const editButton = document.getElementById('edit');
   const closeButton = document.getElementById('close');
 

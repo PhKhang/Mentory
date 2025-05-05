@@ -196,7 +196,7 @@ const connectUser = async (req: Request, res: Response) => {
       },
     });
 
-    res.status(201).json(newRequest);
+    res.status(201).json({message: "Success operation"});
   } catch (error) {
     console.error(error);
     res.status(500).json({ error: "Failed to create mentorship request" });
@@ -254,6 +254,7 @@ const getProfilePage = async (req: Request, res: Response) => {
     isEditable = true;
   }
   res.render("profile", {
+    id: user?.id,
     firstName: user?.firstName,
     lastName: user?.lastName,
     email: user?.email,
@@ -326,7 +327,7 @@ const editProfile = async (req: Request, res: Response) => {
       
       res
         .status(200)
-        .json({ message: "Profile updated successfully", updatedUser });
+        .json({ message: "Profile updated successfully" });
     } catch (error: any) {
       const errorCode = error.code;
       const errorMessage = error.message;

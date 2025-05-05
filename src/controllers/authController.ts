@@ -130,7 +130,7 @@ const login = async (req: Request, res: Response) => {
       return;
     }
 
-    const token = createToken(user, "10m");
+    const token = createToken(user);
 
     console.log("User logged in successfully");
     res
