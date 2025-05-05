@@ -4,7 +4,7 @@
 
     <div class="search-bar">
       <form id="searchForm">
-        <input type="text" name="search" id="searchInput"
+        <input type="text" name="search" id="searchInput" value="{{search}}"
           placeholder="Enter search term">
         <button type="submit" style="display:none;">Submit</button>
       </form>
@@ -18,8 +18,14 @@
         </svg>
       </label>
       <select id="skill">
-        <option value="all">All</option>
-        <option value="javascript">JavaScript</option>
+        <option value="All">All</option>
+        {{#each allSkills}}
+        {{#if (eq ../skill this)}}
+        <option value="{{this}}" selected="selected">{{this}}</option>
+        {{else}}
+        <option value="{{this}}">{{this}}</option>
+        {{/if}}
+        {{/each}}
       </select>
     </div>
 
@@ -106,7 +112,24 @@
       console.error("Error connecting: ", response.statusText);
     }
   }
-  
+
+  const searchForm = document.getElementById('searchForm');
+  searchForm.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const searchInput = document.getElementById('searchInput').value;
+    const skillSelect = document.getElementById('skill').value;
+
+    console.log("Search input: ", searchInput);
+
+    const params = new URLSearchParams(window.location.search);
+
+    if (searchInput) params.set('search', searchInput);
+    else params.delete('search');
+    if (skillSelect) params.set('skill', skillSelect);
+    else params.delete('skill');
+    
+    window.location.href = `${window.location.pathname}?${params.toString()}`;
+  });
 </script>
 
 <style>

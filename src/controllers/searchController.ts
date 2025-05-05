@@ -4,7 +4,7 @@ import prisma from "../config/prisma";
 import { Prisma } from "@prisma/client";
 
 const search = async (req: Request, res: Response) => {
-  const { search, role, skill } = req.query;
+  var { search, role, skill } = req.query;
 
   // get current user from token
   const token = req.cookies?.access_token;
@@ -21,19 +21,52 @@ const search = async (req: Request, res: Response) => {
   }
 
   var users: any[] = [];
+  if (skill === "All") {
+    skill = undefined;
+  }
+  var allSkills: string[] = [];
   try {
+    const profiles = await prisma.profile.findMany({
+      select: {
+        skills: true,
+      },
+    });
+
+    allSkills = profiles
+      .filter((profile) => profile.skills && profile.skills.trim() !== "") // Filter out null/empty skills
+      .flatMap(
+        (profile) =>
+          (profile as any)?.skills
+            .split(",") // Split the skills string by comma (adjust based on your format)
+            .map((skill: string) => skill.trim()) // Trim whitespace from each skill
+            .filter((skill: string) => skill !== "") // Remove empty skills after splitting
+      );
+    allSkills = [...new Set(allSkills)];
+
     users = await prisma.user.findMany({
       where: {
         AND: [
           // do not include the current user
-          (decoded as any)?.email ? { NOT: { email: (decoded as any)?.email } } : undefined,
+          (decoded as any)?.email
+            ? { NOT: { email: (decoded as any)?.email } }
+            : undefined,
           // filter by role, search and skill
           role ? { role: role as string } : undefined,
           search
             ? {
                 OR: [
-                  { firstName: { contains: search as string, mode: "insensitive" } },
-                  { lastName: { contains: search as string, mode: "insensitive" } },
+                  {
+                    firstName: {
+                      contains: search as string,
+                      mode: "insensitive",
+                    },
+                  },
+                  {
+                    lastName: {
+                      contains: search as string,
+                      mode: "insensitive",
+                    },
+                  },
                   // {
                   //   profile: {
                   //     contains: search as string,
@@ -45,8 +78,11 @@ const search = async (req: Request, res: Response) => {
             : undefined,
           skill
             ? {
-                skills: {
-                  has: skill as string,
+                profile: {
+                  skills: {
+                    contains: skill as string,
+                    mode: "insensitive",
+                  },
                 },
               }
             : undefined,
@@ -66,6 +102,9 @@ const search = async (req: Request, res: Response) => {
 
   res.render("browse", {
     users: users,
+    search: search,
+    skill: skill,
+    allSkills: allSkills,
   });
 };
 
