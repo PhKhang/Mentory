@@ -39,7 +39,7 @@
           {{#if (eq this.status "PENDING")}}
           <div class="button-container">
             <button
-              onclick="">Remove</button>
+              onclick="removeRequest('{{this.toUser.id}}')">Remove</button>
           </div>
           {{else if (eq this.status "ACCEPTED")}}
             <a href="mailto:{{this.toUser.email}}">
@@ -99,6 +99,25 @@
 
 <script>
   const ls = {{{ json user }}};
+
+  const removeRequest = async (id) => {
+    console.log("Remove request: ", id);
+    const response = await fetch(`/api/remove-request`, {
+      method: 'DELETE',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        id: id,
+      })
+    });
+
+    if (response.ok) {
+      console.log("Removed request ");
+    } else {
+      console.error("Error removing request: ", response.statusText);
+    }
+  }
 
   const updateRequest = async (id, status) => {
     console.log("Update request: ", id, status);

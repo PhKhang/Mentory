@@ -105,12 +105,47 @@ const updateRequestFromTo = async (req: Request, res: Response) => {
       data: { status: status },
     });
 
-    res.status(200).json(request);
+    res.status(200).json({message: "Success operation"});
   } catch (error) {
     console.error(error);
     res.status(500).json({ error: "Failed to update mentorship request" });
   }
 };
+
+const removeRequest = async (req: Request, res: Response) => {
+  const { id, status } = req.body;
+  const token = req.cookies?.access_token;
+  
+  
+  if (!token) {
+    console.log("No token");
+    res.status(401).redirect("/");
+    return;
+  }
+  
+  var decoded;
+  try {
+    decoded = jwt.verify(token, process.env.JWT_SECRET!);
+  } catch (error) {
+    console.error("Error verifying token:", error);
+    res.status(401).json({ error: "Invalid token" });
+    return;
+  }
+  
+  console.log("Remove request from ", (decoded as any).id, " to ", id);
+  try {
+    const request = await prisma.mentorshipRequest.delete({
+      where: {
+        fromUserId_toUserId: { fromUserId: (decoded as any)?.id, toUserId: id },
+      },
+    });
+
+    res.status(200).json({message: "Success operation"});
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "Failed to remove mentorship request" });
+  }
+}
 
 const connectUser = async (req: Request, res: Response) => {
   const { id } = req.body;
@@ -336,4 +371,4 @@ const deleteProfile = async (req: Request, res: Response) => {
   }
 } 
 
-export { getProfilePage, editProfile, connectUser, dashboard, updateRequestFromTo, deleteProfile };
+export { getProfilePage, editProfile, connectUser, dashboard, updateRequestFromTo, deleteProfile, removeRequest };

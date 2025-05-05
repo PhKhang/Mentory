@@ -90,7 +90,7 @@ const register = async (req: Request, res: Response) => {
       },
     });
 
-    const token = createToken(usr, "10m");
+    const token = createToken(usr);
 
     res
       .cookie("access_token", token, {

@@ -2,7 +2,7 @@ import express, { Request, Response } from "express";
 import { engine } from "express-handlebars";
 import dotenv from "dotenv";
 import bodyParser from "body-parser";
-import cookieParser from "cookie-parser";
+import cookieParser from 'cookie-parser';
 
 import apiRouter from "./routes/apiRoutes";
 import viewRouter from "./routes/viewRoutes";
@@ -25,10 +25,7 @@ app.engine(
       json: (context: any) => {
         return JSON.stringify(context);
       },
-      eq: (a: any, b: any) => {
-        console.log("eq", a, b);
-        return a === b;
-      },
+      eq: (a: any, b: any) => a === b,
     },
   })
 );
